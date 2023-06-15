@@ -34,7 +34,7 @@ class BarcodeController extends Controller
         try{
             $result = $generator->getBarcode($request->barcode_text, $generatorConst, (int)$request->barcode_width, (int)$request->barcode_height, [0, 0, 0]);
             file_put_contents($path, $result);
-        } catch(\Exception | \TypeError $e) {
+        } catch(\Exception | \TypeError | ValueError $e) {
             return $e;
         }
         return $path;
