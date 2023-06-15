@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\BarcodeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::resource('/barcode', Barcodecontroller::class);
+Route::get('/', [Barcodecontroller::class, 'index']);
+Route::post('/generateWebpBarcode', [Barcodecontroller::class, 'generateWebpBarcode']);
