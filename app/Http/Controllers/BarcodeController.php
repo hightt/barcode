@@ -24,7 +24,7 @@ class BarcodeController extends Controller
      * BarcodeGeneratorPNG library does not support .webp extension.
      *
      * @param  Request $request
-     * @return string $path
+     * @return mixed
      */
     public function generatePngBarcode(Request $request)
     {
@@ -34,7 +34,7 @@ class BarcodeController extends Controller
         try{
             $result = $generator->getBarcode($request->barcode_text, $generatorConst, (int)$request->barcode_width, (int)$request->barcode_height, [0, 0, 0]);
             file_put_contents($path, $result);
-        } catch(\Exception | \TypeError | ValueError $e) {
+        } catch(\Exception | \TypeError | \ValueError $e) {
             return $e;
         }
         return $path;
@@ -50,7 +50,7 @@ class BarcodeController extends Controller
     {
         $barcodePng = $this->generatePngBarcode($request);
         if(!is_string($barcodePng)) {
-            return back()->withError("Wprowadzono błędne dane. Wprowadź kod kreskowy w odpowiednim formacie.")->withInput();
+            return back()->withError(sprintf("Wprowadź kod kreskowy w odpowiednim formacie dla typu: %s.", $request->barcode_type))->withInput();
         }
 
         $img = imagecreatefrompng($barcodePng);
